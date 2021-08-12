@@ -11,14 +11,14 @@ class SRXL
 {
 public:
 
-	Sbus(Manager& manager) : m_manager(manager)
+	SRXL(Manager& manager) : m_manager(manager)
 	{
 
 	}
 
 	void Start()
 	{
-		RxUart::reversePolarity(true);
+		RxUart::reversePolarity(false);
 		RxUart::set(Pull::Down);
 		RxUart::setSpeed(Baudrate);
 		RxUart::onReceived([&](Event event, uint8_t value) { eventReceived(event, value); });
@@ -110,8 +110,8 @@ private:
 	static constexpr uint8_t Header16 = 0xA2;
 	static constexpr uint8_t HeaderSpek = 0xA5;
 	static constexpr uint32_t Mask = 0xFFF;
-	static constexpr int32_t Center = 992;
-	static constexpr float Ratio = 1.f / 670.f;
+	static constexpr int32_t Center = 2048;  // The channel value that represents 1500us output
+	static constexpr float Ratio = 1.f / 1225.f;  // The ratio required for scaling the output of -1 and +1 with channel values that represent 1081.25us and 1918.75us respectively
 	static constexpr float GainFactor = 1.f / 1.19f;
 
 	Manager& m_manager;

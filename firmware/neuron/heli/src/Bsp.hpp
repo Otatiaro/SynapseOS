@@ -51,7 +51,7 @@ public:
 
 		m_task.start([]()
 		{
-			auto mpuSelf = sensor::selfTest<neuron::mpu_exti>(MpuPriority);
+			//auto mpuSelf = sensor::selfTest<neuron::mpu_exti>(MpuPriority);
 
 
 			while(true)

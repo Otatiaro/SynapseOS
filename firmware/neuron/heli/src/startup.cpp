@@ -60,4 +60,10 @@ __attribute__((naked)) void Reset_Handler()
 	asm volatile("bkpt 0"); // put a breakpoint because we are not supposed to arrive here
 }
 
-
+extern "C" void _close(){}
+extern "C" void _fstat(){}
+extern "C" void _getpid(){}
+extern "C" void _isatty(){}
+extern "C" void _kill(){}
+extern "C" void _lseek(){}
+extern "C" void _read(){}

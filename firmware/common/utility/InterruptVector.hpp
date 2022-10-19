@@ -5,6 +5,7 @@
 #include <array>
 #include <cassert>
 
+#include <opsy.hpp>
 #include <Hooks.hpp>
 
 using IsrHandler = void();

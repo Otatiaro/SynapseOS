@@ -1,25 +1,14 @@
 #include <cstdint>
 
-#include <CortexM.hpp>
-
 #include <interrupts.hpp>
 #include <InterruptVector.hpp>
 #include <Scheduler.hpp>
-
 #include "Bsp.hpp"
-#include <Hooks.hpp>
-
-#include <scb.hpp>
 
 
 extern "C"
 {
 extern void __libc_init_array();
-
-void _exit()
-{
-	asm volatile("bkpt 0");
-}
 
 extern uint32_t _estack;
 extern uint32_t _sidata;
@@ -33,11 +22,12 @@ uint32_t SystemCoreClock = 160000000;
 
 
 extern "C" void Reset_Handler();
-extern "C" constexpr auto __attribute__((section(".isr_vector"))) vector = InterruptVector<IrqCount>(&_estack, Reset_Handler, SysTick_Handler, SVC_Handler, PendSV_Handler)
-		.Register<DMA2_CH1_IRQn>(neuron2::lsmspi::isrHandler)
-		.Register<DMA2_CH3_IRQn>(neuron2::lisspi::isrHandler)
-		.Register<TIM1_UP_TIM16_IRQn>(neuron2::rxuart::timIsrHandler)
-		.Register<USART3_IRQn>(neuron2::rxuart::uartIsrHandler);
+
+constexpr auto __attribute__((section(".isr_vector"))) vector = InterruptVector<IrqCount>(&_estack, Reset_Handler, SysTick_Handler, SVC_Handler, PendSV_Handler)
+		.Register<DMA2_CH1_IRQn, neuron2::lsmspi::isrHandler>()
+		.Register<DMA2_CH3_IRQn, neuron2::lisspi::isrHandler>()
+		.Register<TIM1_UP_TIM16_IRQn, neuron2::rxuart::timIsrHandler>()
+		.Register<USART3_IRQn, neuron2::rxuart::uartIsrHandler>();
 
 extern "C" int main()
 {
@@ -71,3 +61,11 @@ extern "C" __attribute__((naked)) void Reset_Handler()
 	asm volatile("bkpt 0"); // put a breakpoint because we are not supposed to arrive here
 }
 
+extern "C" void _close(){}
+extern "C" void _fstat(){}
+extern "C" void _getpid(){}
+extern "C" void _isatty(){}
+extern "C" void _kill(){}
+extern "C" void _lseek(){}
+extern "C" void _read(){}
+extern "C" void _write(){}

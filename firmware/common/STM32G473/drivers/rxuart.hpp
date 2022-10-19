@@ -75,10 +75,11 @@ public:
 		return false;
 	}*/
 
-	static uint32_t setSpeed(uint32_t baudrate)
+	static uint32_t setSpeed(uint32_t baudrate, bool parity)
 	{
 		usart3.brr = (SystemCoreClock + baudrate / 2) / baudrate;
 		return SystemCoreClock / usart3.brr.load().value();
+		// TODO : set parity !
 	}
 
 
